@@ -29,4 +29,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/developers', function () {
         return view('developers');
     })->name('developers');
+
+    Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products');
+
+    Route::get('/products/create', function () {
+        return view('products.create');
+    })->name('product.create');
+
+    Route::post('/products/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
 });
