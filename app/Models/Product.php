@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $with = ['prices'];
 
     public function owner()
     {
@@ -20,4 +23,5 @@ class Product extends Model
     {
         return $this->hasMany(Price::class);
     }
+
 }

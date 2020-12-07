@@ -22,3 +22,9 @@ Route::middleware('auth:sanctum')->get('/test', function (Request $request) {
     return 'Connected';
 });
 
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/product', [\App\Http\Controllers\ProductController::class, 'index']);
+    Route::get('/product/{product:api_id}', [\App\Http\Controllers\ProductController::class, 'show']);
+    Route::post('/product', [\App\Http\Controllers\ProductController::class, 'store']);
+});
+

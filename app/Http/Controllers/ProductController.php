@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -15,34 +16,23 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('prices')->latest()->get();
-
-        return view('products.products', compact('products'));
+        return auth()->user()->products()->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        $product = Product::create([
+        $product = auth()->user()->products()->create([
             'name' => $request->name,
             'description' => $request->description,
             'owner_id' => auth()->id(),
             'api_id' => Str::uuid()
-        ])->prices()->create([
-            'model' => $request->model,
-            'price' => $request->price,
-            'currency' => 'USD',
-            'regularity' => 1,
-            'billing_period' => $request->billing_period,
-            'api_id' => Str::uuid()
         ]);
 
-        return redirect('/products');
+        return response()->json($product);
     }
 
     /**
@@ -51,9 +41,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $products)
+    public function show(Product $product)
     {
-        //
+        return response()->json($product);
     }
 
     /**
