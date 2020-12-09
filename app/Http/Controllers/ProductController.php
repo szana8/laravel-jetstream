@@ -22,9 +22,13 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param \App\Http\Requests\CreateProductRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateProductRequest $request)
     {
+        //dd(json_encode(request('prices')));
         $product = auth()->user()->products()->create([
             'name' => $request->name,
             'description' => $request->description,
@@ -32,13 +36,18 @@ class ProductController extends Controller
             'api_id' => Str::uuid()
         ]);
 
+        if (request('prices')) {
+            $product->prices()->createMany(request('prices'));
+        }
+
         return response()->json($product);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param \App\Models\Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
