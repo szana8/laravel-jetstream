@@ -23,8 +23,15 @@ Route::middleware('auth:sanctum')->get('/test', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/product', [\App\Http\Controllers\ProductController::class, 'index']);
-    Route::get('/product/{product:api_id}', [\App\Http\Controllers\ProductController::class, 'show']);
-    Route::post('/product', [\App\Http\Controllers\ProductController::class, 'store']);
+    Route::prefix('product')->group(function() {
+        // Product related routes
+        Route::get('/', [\App\Http\Controllers\ProductController::class, 'index']);
+        Route::get('/{product:api_id}', [\App\Http\Controllers\ProductController::class, 'show']);
+        Route::post('/', [\App\Http\Controllers\ProductController::class, 'store']);
+
+        // Product Price related routes
+        Route::post('/price', [\App\Http\Controllers\PriceController::class, 'store']);
+    });
+
 });
 

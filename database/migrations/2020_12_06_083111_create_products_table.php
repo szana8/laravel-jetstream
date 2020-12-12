@@ -16,10 +16,13 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->string('type');
             $table->string('image')->nullable();
             $table->json('metadata')->nullable();
             $table->string('api_id')->unique();
+            $table->boolean('active')->default(false);
+            $table->boolean('livemode')->default(false);
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

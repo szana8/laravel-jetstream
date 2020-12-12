@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Price;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class ProductFactory extends Factory
+class PriceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Product::class;
+    protected $model = Price::class;
 
     /**
      * Define the model's default state.
@@ -24,12 +24,12 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->catchPhrase,
-            'description' => $this->faker->sentence,
-            'type' => 'service',
-            'image' => $this->faker->imageUrl(),
-            'metadata' => ''
+            'product_id' => Product::factory()->create(),
+            'model' => 'standard',
+            'unit_amount' => $this->faker->randomFloat(10),
+            'currency' => $this->faker->currencyCode,
+            'interval' => 1,
+            'billing_scheme' => 'monthly'
         ];
     }
-
 }

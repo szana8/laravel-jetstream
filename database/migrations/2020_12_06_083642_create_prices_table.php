@@ -17,11 +17,13 @@ class CreatePricesTable extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->enum('model', ['standard', 'package'])->default('standard');
-            $table->float('price');
+            $table->float('unit_amount');
             $table->string('currency')->default('USD');
-            $table->integer('regularity');
-            $table->string('billing_period');
+            $table->string('interval');
+            $table->string('billing_scheme');
             $table->string('api_id')->unique();
+            $table->boolean('active')->default(false);
+            $table->boolean('livemode')->default(false);
             $table->timestamps();
         });
     }

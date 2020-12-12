@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -28,17 +27,12 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        //dd(json_encode(request('prices')));
-        $product = auth()->user()->products()->create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'owner_id' => auth()->id(),
-            'api_id' => Str::uuid()
-        ]);
+        $product = auth()->user()->products()->create($request->validated());
 
-        if (request('prices')) {
-            $product->prices()->createMany(request('prices'));
-        }
+
+//        if (! empty(request('prices'))) {
+//            $product->prices()->createMany(request('prices'));
+//        }
 
         return response()->json($product);
     }
