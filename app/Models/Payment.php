@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Price extends Model
+class Payment extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Price extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['product_id', 'model', 'unit_amount', 'currency', 'interval', 'billing_scheme'];
+    protected $fillable = ['name', 'type', 'public_key', 'secret_key'];
 
     /**
      * Overwrite the default boot method to set the default attribute values
@@ -25,15 +25,19 @@ class Price extends Model
         parent::boot();
 
         // Set the default value for the attributes
-        self::creating(function ($price) {
-            $price->api_id = Str::uuid();
-            $price->active = true;
-            $price->livemode = false;
+        self::creating(function ($payment) {
+            $payment->api_id = Str::uuid();
+            $payment->owner_id = auth()->id();
         });
     }
 
-    public function product()
+    /**
+     * A payment belongs to a user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(User::class, 'id');
     }
 }

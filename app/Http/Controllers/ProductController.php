@@ -29,11 +29,6 @@ class ProductController extends Controller
     {
         $product = auth()->user()->products()->create($request->validated());
 
-
-//        if (! empty(request('prices'))) {
-//            $product->prices()->createMany(request('prices'));
-//        }
-
         return response()->json($product);
     }
 
@@ -44,9 +39,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($product)
     {
-        return response()->json($product);
+        $response = auth()->user()->products()->where('api_id', $product)->first();
+
+        return response()->json($response);
     }
 
     /**

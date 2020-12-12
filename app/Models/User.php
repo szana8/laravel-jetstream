@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class, 'owner_id');
     }
+
+    /**
+     * A user can have many payments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'owner_id');
+    }
 }

@@ -15,6 +15,6 @@ abstract class TestCase extends BaseTestCase
 
         Schema::enableForeignKeyConstraints();
 
-        $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
     }
 }
